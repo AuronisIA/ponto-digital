@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ponto Digital</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icone-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Ponto">
+  <meta name="theme-color" content="#1550c8">
+  <script>
+    /* =====================================================================
+       ÚNICA COISA PARA EDITAR: cole aqui o link do app (termina em /exec)
+       ===================================================================== */
+    var APP_URL = 'https://script.google.com/macros/s/AKfycbzbzN86HW7zRTNWF9QWmtuHPZ9cVRMlBqO1KgrKaseTdRoBXlg8vuyUy_HfUVrWBV4f/exec';
+
+    // Aberto pelo ícone da tela inicial → vai direto para o ponto.
+    var configurado = /^https:\/\/script\.google\.com\/.+\/exec/.test(APP_URL);
+    var peloIcone = /[?&]app=1/.test(location.search) || window.navigator.standalone === true ||
+      (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+    if (configurado && peloIcone) location.replace(APP_URL);
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #111b2e; background: #eef2f8; min-height: 100vh; }
+    .topo { background: linear-gradient(160deg, #0a2668 0%, #1550c8 62%, #2a6cf0 100%); color: #fff; padding: 36px 20px 80px; text-align: center; border-radius: 0 0 32px 32px; }
+    .topo img { width: 84px; height: 84px; border-radius: 22px; box-shadow: 0 10px 28px rgba(0,0,0,.3); }
+    .topo h1 { margin: 14px 0 4px; font-size: 24px; }
+    .topo p { margin: 0; opacity: .85; }
+    main { max-width: 460px; margin: -56px auto 30px; padding: 0 16px; }
+    .card { background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 12px 32px rgba(15,35,80,.12); margin-bottom: 14px; }
+    .btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px; border-radius: 12px; border: 0; font: inherit; font-size: 17px; font-weight: 700; color: #fff; text-decoration: none;
+      background: linear-gradient(135deg, #1b5fe0, #0e3a96); box-shadow: 0 8px 20px rgba(21,80,200,.3); }
+    h2 { font-size: 17px; margin: 0 0 10px; }
+    ol { margin: 0; padding-left: 20px; line-height: 1.6; }
+    .aba { display: flex; gap: 6px; margin-bottom: 12px; }
+    .aba button { flex: 1; padding: 9px; border-radius: 10px; border: 1px solid #d9e0ea; background: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+    .aba button.on { background: #1550c8; border-color: #1550c8; color: #fff; }
+    .oculto { display: none; }
+    .aviso { background: #fdf0e6; color: #7c3108; border-radius: 10px; padding: 10px 12px; font-size: 14px; }
+    small { color: #5d6779; }
+  </style>
+</head>
+<body>
+  <div class="topo">
+    <img src="icone-192.png" alt="">
+    <h1>Ponto Digital</h1>
+    <p>Registro de ponto do colaborador</p>
+  </div>
+  <main>
+    <div class="card">
+      <div id="naoConfig" class="aviso oculto">Página ainda não configurada: edite o arquivo <b>index.html</b> e cole o link do app em <code>APP_URL</code>.</div>
+      <a class="btn" id="abrir" href="#">Abrir o ponto agora →</a>
+    </div>
+    <div class="card">
+      <h2>📲 Instale no seu celular (uma vez só)</h2>
+      <div class="aba"><button id="tAndroid" class="on">Android</button><button id="tIphone">iPhone</button></div>
+      <ol id="pAndroid">
+        <li>Abra esta página no <b>Chrome</b>.</li>
+        <li>Toque no menu <b>⋮</b> (canto superior direito).</li>
+        <li>Toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>.</li>
+        <li>Pronto! O ícone <b>Ponto</b> aparece na tela do celular.</li>
+      </ol>
+      <ol id="pIphone" class="oculto">
+        <li>Abra esta página no <b>Safari</b>.</li>
+        <li>Toque em <b>Compartilhar</b> (quadrado com seta para cima).</li>
+        <li>Role e toque em <b>Adicionar à Tela de Início</b> → <b>Adicionar</b>.</li>
+        <li>Pronto! O ícone <b>Ponto</b> aparece na tela do celular.</li>
+      </ol>
+      <p><small>Depois, é só tocar no ícone para bater o ponto. Quando o celular pedir a localização, toque em <b>Permitir</b>.</small></p>
+    </div>
+  </main>
+  <script>
+    if (configurado) document.getElementById('abrir').href = APP_URL;
+    else { document.getElementById('naoConfig').classList.remove('oculto'); document.getElementById('abrir').classList.add('oculto'); }
+    var ios = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    function aba(i) {
+      document.getElementById('tAndroid').classList.toggle('on', !i); document.getElementById('tIphone').classList.toggle('on', i);
+      document.getElementById('pAndroid').classList.toggle('oculto', i); document.getElementById('pIphone').classList.toggle('oculto', !i);
+    }
+    document.getElementById('tAndroid').onclick = function () { aba(false); };
+    document.getElementById('tIphone').onclick = function () { aba(true); };
+    aba(ios);
+  </script>
+</body>
+</html>
